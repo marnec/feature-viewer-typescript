@@ -18,7 +18,8 @@ export interface UserOptions {
     sideBar?: number | string | boolean,
     animation?: boolean,
     unit?: string,
-    backgroundcolor?: string
+    backgroundcolor?: string,
+    maxDepth?: number
 }
 
 export interface ViewerOptions {

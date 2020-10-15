@@ -18,6 +18,7 @@ export interface UserOptions {
     animation?: boolean;
     unit?: string;
     backgroundcolor?: string;
+    maxDepth?: number;
 }
 export interface ViewerOptions {
     showSequence: boolean;

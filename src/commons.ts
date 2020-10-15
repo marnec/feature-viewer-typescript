@@ -53,6 +53,7 @@ class Commons {
         ladderWidth: 15,
         ladderSpacing: 10,
         ladderHeight: 18,
+        maxDepth: null,
     };
     public mobilesize = 951;
     public radius = 5;

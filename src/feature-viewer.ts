@@ -26,6 +26,7 @@ class FeatureViewer {
     private tool: Tool;
     private lastHighlight: any;
 
+
     private parseUserOptions(options: UserOptions): void {
 
         const simple_keys = [
@@ -51,6 +52,11 @@ class FeatureViewer {
                 this.commons.viewerOptions[key] = options[key];
             }
         }
+
+        if (options.maxDepth) {
+            this.commons.viewerOptions.maxDepth = options.maxDepth;
+        }
+        this.commons.viewerOptions.maxDepth ++
 
         // when to mobile mode
         if (options.breakpoint) {
@@ -306,7 +312,6 @@ class FeatureViewer {
             .html((d) => {
                 return d.label;
             });
-
         const ladderGroup = this.commons.yAxisSVGGroup
             .selectAll('.ladder')
             .data((e) => {
@@ -315,34 +320,52 @@ class FeatureViewer {
             .enter()
             .append('g')
 
-        ladderGroup.append('rect')
-            .attr('transform', ([i, d]) => {
+        // ladderGroup.append('rect')
+        //     ladderGroup.append('path').attr('d', ([i, d]) => {
+        //         return this.roundedRect(0, 0, 16, 20, 5 , false, true, true, false);
+        //     })
+            ladderGroup.append('foreignObject')
+                .attr("width", "30px")
+                .attr("height", "30px")
+                .html(([i, d]) => {
+                    return  (d.id !== 'fv_sequence' && i===d.flagLevel-1) ?
+                        '<div class="badge-feature" style="background-color: ' + d.ladderColor + ' ' +
+                        '; ' + (d.hasSubFeatures ? 'border-style: solid; border-width: 1px;' : '') + '">'
+                        + (d.ladderLabel === 'F' ? '' : d.ladderLabel) +
+                        '</div>' : ''}
+                        )
+
+            ladderGroup.attr('transform', ([i, d]) => {
                 const margin = (this.commons.viewerOptions.margin.left + (i-1)*this.commons.viewerOptions.ladderSpacing);
                 const ladderWidth = this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth;
                 const x = margin - ladderWidth;
                 const y = (d.y + this.commons.step/6);
                 return "translate(" + x + "," + y + ")"
             })
-            .attr('width', this.commons.viewerOptions.ladderWidth).attr('height', this.commons.viewerOptions.ladderHeight)
-            .attr('fill', ([i, d]) => {
-                return  (d.id !== 'fv_sequence' && i===d.flagLevel-1) ? d.ladderColor : 'rgba(255, 255, 255, 0)'
-            })
-            .attr('class', d => `ladder`)
-        ladderGroup.append('text')
-            .attr('transform', ([i, d]) => {
-                const margin = (this.commons.viewerOptions.margin.left + (i-1)*this.commons.viewerOptions.ladderSpacing);
-                const ladderWidth = this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth;
-                const x = margin - ladderWidth + this.commons.viewerOptions.ladderWidth/2;
-                const y = (d.y + this.commons.step);
-                return "translate(" + x + "," + y + ")"
-            })
-            .text(([i, d]) => i<d.flagLevel-1? '': d.ladderLabel)
-            .attr('font-size', '.8125rem')
-            .attr('fill', 'black')
-            .attr('font-weight', 'bold')
-            .style('alignment-baseline', 'after-edge')
-            .style('text-anchor', 'middle')
+            // .attr('width', this.commons.viewerOptions.ladderWidth).attr('height', this.commons.viewerOptions.ladderHeight)
+            // .attr('fill', ([i, d]) => {
+            //     return  (d.id !== 'fv_sequence' && i===d.flagLevel-1) ? d.ladderColor : 'rgba(255, 255, 255, 0)'
+            // })
+            // .attr('class', d => `ladder`)
+            // // .attr('rx', 0)
+            // // .attr('ry', 2)
+
+        // ladderGroup.append('text')
+        //     .attr('transform', ([i, d]) => {
+        //         const margin = (this.commons.viewerOptions.margin.left + (i-1)*this.commons.viewerOptions.ladderSpacing);
+        //         const ladderWidth = this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth;
+        //         const x = margin - ladderWidth + this.commons.viewerOptions.ladderWidth/2;
+        //         const y = (d.y + this.commons.step);
+        //         return "translate(" + x + "," + y + ")"
+        //     })
+        //     .text(([i, d]) => i<d.flagLevel-1? '': d.ladderLabel)
+        //     .attr('font-size', '.8125rem')
+        //     .attr('fill', 'black')
+        //     .attr('font-weight', 'bold')
+        //     .style('alignment-baseline', 'after-edge')
+        //     .style('text-anchor', 'middle')
     }
+
 
     private applyLastHighlight() {
         if (this.lastHighlight) {
@@ -1436,6 +1459,8 @@ class FeatureViewer {
         }
     }
 
+
+
     public collapseAll() {
         for (const i of Object.keys(this.commons.features)) {
             this.recursiveClick(this.commons.features[i], true)
@@ -1615,7 +1640,9 @@ class FeatureViewer {
         this.commons.features = this.commons.features.concat(unflatted.tree);
         let ftsIds = unflatted.ids;
 
-        this.commons.viewerOptions.maxDepth = Math.max(...this.commons.features.map(f => this.getLevel(f, 1)));
+        if (!this.commons.viewerOptions.maxDepth) {
+            this.commons.viewerOptions.maxDepth = Math.max(...this.commons.features.map(f => this.getLevel(f, 1)));
+        }
 
 
         // check if features are missing from the tree

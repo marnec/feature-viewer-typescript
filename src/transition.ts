@@ -203,14 +203,12 @@ export class Transition extends ComputingFunctions {
     }
 
     public lineTransition(object) {
-
         let container = this.commons.svgContainer.select(`#c${object.id}_container`);
-
+        const yScores = object.data.map(o => o.y);
+        const maxScore = Math.max(...yScores);
+        const minScore = Math.min(...yScores);
         // keep height
-        console.log('range', object.height, 'domain', object.level)
-        this.commons.lineYScale//.range([0, -(object.height)]).domain([0, -(object.level)]);
-            .domain([0, 10])
-            .range([0, 25]);
+        this.commons.lineYScale.domain([minScore, maxScore]).range([0, this.commons.step/10]);
         container.selectAll(".line " + object.className)
             .attr("d", (d) => {
                 return this.commons.lineYScale(-d.y) * 10 + object.shift

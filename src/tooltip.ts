@@ -173,7 +173,7 @@ class Tool extends Calculate {
                             .html(pD['label'] || pD['id'])
                             .style("left", left+'px')
                             .style("top", top+'px');
-                    } else if ('tooltip' in pD && pD['tooltip']) {
+                    } else if (pD['tooltip']) {
                         tooltipDiv.transition()
                             .duration(200)
                             .style("opacity", 1);
@@ -187,14 +187,14 @@ class Tool extends Calculate {
                 selection
                 // tooltip
                     .on('mouseover.tooltip', (pD) => {
-                        if (this.commons.viewerOptions.mobileMode) {
+                        // if (this.commons.viewerOptions.mobileMode) {
                             drawMyTooltip(pD);
-                        }
+                        // }
                     })
                     .on('mousemove.tooltip', (pD) => {
-                        if (this.commons.viewerOptions.mobileMode) {
+                        // if (this.commons.viewerOptions.mobileMode) {
                             drawMyTooltip(pD);
-                        }
+                        // }
                     })
                     .on('mouseout.tooltip', () => {
                         // Remove tooltip

@@ -207,7 +207,10 @@ export class Transition extends ComputingFunctions {
         let container = this.commons.svgContainer.select(`#c${object.id}_container`);
 
         // keep height
-        this.commons.lineYScale.range([0, -(object.height)]).domain([0, -(object.level)]);
+        console.log('range', object.height, 'domain', object.level)
+        this.commons.lineYScale//.range([0, -(object.height)]).domain([0, -(object.level)]);
+            .domain([0, 10])
+            .range([0, 25]);
         container.selectAll(".line " + object.className)
             .attr("d", (d) => {
                 return this.commons.lineYScale(-d.y) * 10 + object.shift

@@ -302,6 +302,7 @@ class FeatureViewer {
             .attr("width", (d) => {
                 // text only if space is enough
                 if (this.commons.viewerOptions.mobileMode) {
+
                     return this.calcFlagWidth(d);
                 } else {
                     let margin = 20 + this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth  // 20 + (20 * d.flagLevel) --> 0
@@ -318,7 +319,7 @@ class FeatureViewer {
                 return [...Array(e.flagLevel)].map((obj, x) => [x, e])
             })
             .enter()
-            .append('g')
+            .append('g').attr('id', 'ladder-group')
 
         // ladderGroup.append('rect')
         //     ladderGroup.append('path').attr('d', ([i, d]) => {
@@ -336,6 +337,11 @@ class FeatureViewer {
                         )
 
             ladderGroup.attr('transform', ([i, d]) => {
+                if (this.commons.viewerOptions.mobileMode) {
+                    // console.log(d)
+                    // return this.calcFlagWidth(d);
+                }
+
                 const margin = (this.commons.viewerOptions.margin.left + (i-1)*this.commons.viewerOptions.ladderSpacing);
                 const ladderWidth = this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth;
                 const x = margin - ladderWidth;
@@ -503,6 +509,18 @@ class FeatureViewer {
                     return this.commons.viewerOptions.margin.left - margin; // chevron margin and text indent
                 }
             });
+
+        if (this.commons.viewerOptions.mobileMode) {
+            d3.select(`#${this.divId}`).selectAll("#ladder-group").attr("transform", ([i, d]) => {
+                return "translate(" + d.flagLevel * this.commons.viewerOptions.ladderSpacing + "," + d['y'] + ")"
+            });
+        } else {
+            d3.select(`#${this.divId}`).selectAll("#ladder-group").attr("transform", ([i, d]) => {
+                const margin = 20 + this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth
+                return "translate(" + (this.commons.viewerOptions.labelTrackWidth - margin + (d.flagLevel * this.commons.viewerOptions.ladderSpacing)) + "," + d['y'] + ")"
+            });
+        }
+
         // background containers, update width
         this.commons.svgContainer.attr("transform", "translate(" + (this.commons.viewerOptions.margin.left).toString() + ",12)");
         // this.commons.tagsContainer.attr("transform","translate(" + (this.commons.viewerOptions.width + this.commons.viewerOptions.margin.left) + "," + this.commons.viewerOptions.margin.top + ")")

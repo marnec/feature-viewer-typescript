@@ -330,10 +330,8 @@ class FeatureViewer {
                 .attr("height", "30px")
                 .html(([i, d]) => {
                     return  (d.id !== 'fv_sequence' && i===d.flagLevel-1) ?
-                        '<div class="badge-feature badge-feature-sm" style="background-color: ' + d.ladderColor + ' ' +
-                        '; ' + (d.hasSubFeatures ? 'border-style: solid; border-width: 1px;' : '') + '">'
-                        + (d.ladderLabel === 'F' ? '' : d.ladderLabel) +
-                        '</div>' : ''}
+                        `<div class="badge-feature badge-feature-sm" style="background-color: ${d.ladderBgColor}; color: ${d.ladderColor};
+                        border-style: ${d.hasSubFeatures? 'solid' : 'hidden'}; border-width: 1px; border-color: ${d.ladderBorderColor}">${d.ladderLabel}</div>`: ''}
                         )
 
             ladderGroup.attr('transform', ([i, d]) => {

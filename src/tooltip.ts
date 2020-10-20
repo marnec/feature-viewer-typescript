@@ -319,7 +319,6 @@ class Tool extends Calculate {
                 };
 
                 let drawMyTooltip = (pD) => {
-
                     if (pD.tooltip || object.tooltip) {
                         customTooltipDiv.html("");
                         let html = '';
@@ -407,17 +406,11 @@ class Tool extends Calculate {
                         }
                     })
                     .on('click', (pD) => {
-
                         // not button: feature
                         if (object.type !== "button") { // feature
 
                             // TODO: define data for event exporting when clicking rects
                             // TODO: fix exports.event.target.__data__ is undefined
-
-                            let xTemp;
-                            let yTemp;
-                            let xRect;
-                            let widthRect;
                             let elemHover;
 
                             let forSelection = pD;

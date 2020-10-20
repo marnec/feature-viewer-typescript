@@ -96,7 +96,7 @@ class PreComputing {
         }
 
         // this.commons.lineYScale.range([0, -(shift)]).domain([0, -(level)]);
-        this.commons.lineYScale.domain([minScore, maxScore]).range([0, this.commons.step/10]);
+        this.commons.lineYScale.domain([minScore, maxScore]).range([0, this.commons.step/11]);
 
         object.pathLevel = shift * 10 + 5;
         object.level = level;

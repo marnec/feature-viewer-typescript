@@ -330,18 +330,13 @@ class FeatureViewer {
                 .attr("height", "30px")
                 .html(([i, d]) => {
                     return  (d.id !== 'fv_sequence' && i===d.flagLevel-1) ?
-                        '<div class="badge-feature" style="background-color: ' + d.ladderColor + ' ' +
+                        '<div class="badge-feature badge-feature-sm" style="background-color: ' + d.ladderColor + ' ' +
                         '; ' + (d.hasSubFeatures ? 'border-style: solid; border-width: 1px;' : '') + '">'
                         + (d.ladderLabel === 'F' ? '' : d.ladderLabel) +
                         '</div>' : ''}
                         )
 
             ladderGroup.attr('transform', ([i, d]) => {
-                if (this.commons.viewerOptions.mobileMode) {
-                    // console.log(d)
-                    // return this.calcFlagWidth(d);
-                }
-
                 const margin = (this.commons.viewerOptions.margin.left + (i-1)*this.commons.viewerOptions.ladderSpacing);
                 const ladderWidth = this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth;
                 const x = margin - ladderWidth;
@@ -462,21 +457,21 @@ class FeatureViewer {
                 }
 
                 this.commons.currentzoom = zoomScale;
-                if (CustomEvent) {
-                    // zooming in
-                    this.commons.svgElement.dispatchEvent(new CustomEvent(this.commons.events.ZOOM_EVENT, {
-                        detail: {
-                            start: start,
-                            end: end,
-                            zoom: zoomScale
-                        }
-                    }));
-                }
-                if (this.commons.trigger) this.commons.trigger(this.commons.events.ZOOM_EVENT, {
-                    start: start,
-                    end: end,
-                    zoom: zoomScale
-                });
+                // if (CustomEvent) {
+                //     // zooming in
+                //     this.commons.svgElement.dispatchEvent(new CustomEvent(this.commons.events.ZOOM_EVENT, {
+                //         detail: {
+                //             start: start,
+                //             end: end,
+                //             zoom: zoomScale
+                //         }
+                //     }));
+                // }
+                // if (this.commons.trigger) this.commons.trigger(this.commons.events.ZOOM_EVENT, {
+                //     start: start,
+                //     end: end,
+                //     zoom: zoomScale
+                // });
             }
 
             // remove brush now that transition is complete
@@ -512,12 +507,12 @@ class FeatureViewer {
 
         if (this.commons.viewerOptions.mobileMode) {
             d3.select(`#${this.divId}`).selectAll("#ladder-group").attr("transform", ([i, d]) => {
-                return "translate(" + d.flagLevel * this.commons.viewerOptions.ladderSpacing + "," + d['y'] + ")"
+                return "translate(" + ((d.flagLevel - 1) * this.commons.viewerOptions.ladderSpacing ) + "," + (d['y'] + 3.14) + ")"
             });
         } else {
             d3.select(`#${this.divId}`).selectAll("#ladder-group").attr("transform", ([i, d]) => {
                 const margin = 20 + this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth
-                return "translate(" + (this.commons.viewerOptions.labelTrackWidth - margin + (d.flagLevel * this.commons.viewerOptions.ladderSpacing)) + "," + d['y'] + ")"
+                return "translate(" + (this.commons.viewerOptions.labelTrackWidth - margin + (d.flagLevel * this.commons.viewerOptions.ladderSpacing)) + "," + (d['y'] + 3.14) + ")"
             });
         }
 
@@ -892,13 +887,13 @@ class FeatureViewer {
             .on("dblclick", (d,i)=>{
                 // react to double click
                 this.resetZoom();
-                if (CustomEvent) {
-                    let event = new CustomEvent(this.commons.events.CLEAR_SELECTION_EVENT, {detail: {}});
-                    this.commons.svgElement.dispatchEvent(event);
-                } else {
-                    this.commons.logger.warn("CustomEvent is not defined", {fvId:this.divId});
-                }
-                if (this.commons.trigger) this.commons.trigger(this.commons.events.CLEAR_SELECTION_EVENT);
+                // if (CustomEvent) {
+                //     let event = new CustomEvent(this.commons.events.CLEAR_SELECTION_EVENT, {detail: {}});
+                //     this.commons.svgElement.dispatchEvent(event);
+                // } else {
+                //     this.commons.logger.warn("CustomEvent is not defined", {fvId:this.divId});
+                // }
+                // if (this.commons.trigger) this.commons.trigger(this.commons.events.CLEAR_SELECTION_EVENT);
             })
             .on("contextmenu", (d, i) => {
                 // react on right click

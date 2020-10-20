@@ -56,7 +56,7 @@ class Commons {
         maxDepth: null,
     };
     public mobilesize = 951;
-    public radius = 5;
+    public radius = 2;
     public flagsHeight = 18;
     public maxNumberOfButtons = 0;
     public features: FeaturesList;

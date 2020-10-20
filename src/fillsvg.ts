@@ -601,8 +601,8 @@ class FillSVG extends ComputingFunctions {
             .text((d) => {
                 return d.label
             })
-            .style("fill", "rgba(39, 37, 37, 0.9)")
-            .style("z-index", "15")
+            // .style("fill", "rgba(39, 37, 37, 0.9)")
+            // .style("z-index", "15")
             .style("visibility",  (d) => {
                 if (d.label) {
                     return (this.commons.scaling(d.y) - this.commons.scaling(d.x)) > d.label.length * 8 && object.height > 11 ? "visible" : "hidden";

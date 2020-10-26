@@ -114,5 +114,5 @@ export declare class FeatureViewerLog implements FeatureViewerLogger {
     info(msg: string, ...supportingDetails: any[]): void;
     warn(msg: string, ...supportingDetails: any[]): void;
     error(msg: string, ...supportingDetails: any[]): void;
-    private emitLogMessage;
+    private emitLogMessage(msgType, msg, supportingDetails);
 }

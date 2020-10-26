@@ -3,10 +3,10 @@ declare class FillSVG extends ComputingFunctions {
     private preComputing;
     private calculate;
     private storeData;
-    private hexToRgb;
-    private isLight;
-    private sbcRip;
-    private shadeBlendConvert;
+    private hexToRgb(hex);
+    private isLight(mycolor);
+    private sbcRip(d, i, r);
+    private shadeBlendConvert(p, from?, to?);
     typeIdentifier(feature: any): void;
     tagArea(object: any, thisYPosition: any): void;
     sequence(seq: any, start?: number): void;

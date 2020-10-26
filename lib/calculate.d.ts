@@ -1,8 +1,8 @@
 import { FeaturesList } from "./interfaces";
 declare class Calculate {
     commons: any;
-    private uniq;
-    private orderBy;
+    private uniq(a);
+    private orderBy(values, orderType);
     yxPoints(d: any): string;
     getTransf(el: any): any[];
     getMarginLeft(): number;

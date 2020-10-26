@@ -1165,6 +1165,14 @@ class FeatureViewer {
         this.resetTooltip(this.commons.customTooltipDiv);
         this.resetTooltip(this.commons.tooltipDiv);
 
+        if (CustomEvent) {
+            let event = new CustomEvent(this.commons.events.CLEAR_SELECTION_EVENT, {detail: {}});
+            this.commons.svgElement.dispatchEvent(event);
+        } else {
+            this.commons.logger.warn("CustomEvent is not defined", {fvId:this.divId});
+        }
+        if (this.commons.trigger) this.commons.trigger(this.commons.events.CLEAR_SELECTION_EVENT);
+
         // remove selected features
         if (this.commons.featureSelected) {
             d3.select(`#${this.divId}`).select(`#${this.commons.featureSelected}`).style("fill-opacity", "0.6");
@@ -1469,7 +1477,6 @@ class FeatureViewer {
             }
         }
     }
-
 
 
     public collapseAll() {
